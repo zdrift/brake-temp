@@ -47,9 +47,7 @@ import java.lang.Math;
 
 
 public class MainActivity extends AppCompatActivity {
-    SensorManager mgr;
     private static final String TAG = MainActivity.class.getSimpleName();
-    private int errorcnt=0;
 
     TextView txt_speed;
     TextView txt_accuracy;
@@ -105,9 +103,6 @@ public class MainActivity extends AppCompatActivity {
             txt_delta_speed = (TextView) findViewById(R.id.txt_delta_speed);
             txt_status = (TextView) findViewById(R.id.txt_status);
             txt_delta_Temp = (TextView) findViewById(R.id.txt_deltaT);
-            mgr = (SensorManager) getSystemService(getApplicationContext().SENSOR_SERVICE);
-            mgr.registerListener(listener, mgr.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
-                    SensorManager.SENSOR_DELAY_NORMAL);
 
             LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
@@ -116,28 +111,15 @@ public class MainActivity extends AppCompatActivity {
         LocationListener locationListener = new LocationListener() {
             public void onLocationChanged(Location location) {
                 location.getLatitude();
-                /*
-                Toast.makeText(MainActivity.this, "Current speed:" + location.getSpeed(),
-                        Toast.LENGTH_SHORT).show();
-                Toast.makeText(MainActivity.this, "Current accuracy:" + location.getAccuracy(),
-                        Toast.LENGTH_SHORT).show();
-                Toast.makeText(MainActivity.this, "Current provider:" + location.getProvider(),
-                        Toast.LENGTH_SHORT).show();
-                 */
-
-                //Log.d(TAG,"speed."+location.getSpeed());
                 try {
                     mVehicle.speed = location.getSpeed();
                     //txt_speed.setText("" + String.format("%.2f", mVehicle.speed));
-
                     // txt_ekin.setText(""+ String.format("%.2f",mPhysics.fct_Ekin(mVehicle.speed,mVehicle.mass)));
                     //txt_accuracy.setText("" + String.format("%.2f", location.getAccuracy()));
                 }catch(Exception e){
                     Log.e(TAG,"speed and accuracy - exception");
-                    errorcnt++;
-
                    //txt_speed.setText("error calc");
-                    //txt_accuracy.setText("error");
+                    // txt_accuracy.setText("error");
                 }
             }
 
@@ -189,45 +171,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mgr.unregisterListener(listener);
         stopRepeatingTask();
     }
 
-    private SensorEventListener listener = new SensorEventListener() {
 
-        @Override
-        public void onSensorChanged(SensorEvent event) {
-            if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-
-                try {
-                    x = event.values[0];
-                    y = event.values[1];
-                    z = event.values[2];
-                    sum = (float) Math.sqrt(x * x + y * y + z * z);
-
-                    txt_gforce_x.setText("" + String.format("%.2f", (x - xd)));
-                    txt_gforce_y.setText("" + String.format("%.2f", (y - yd)));
-                    txt_gforce_z.setText("" + String.format("%.2f", (z - zd)));
-                    txt_gforce_sum.setText("" + String.format("%.2f", (sum - sumd)));
-                }catch(NullPointerException e){
-                    Log.e(TAG,"null pointer exeption G-sensor");
-                    errorcnt++;
-                }
-
-
-
-            }
-        }
-
-        ;
-
-        @Override
-        public void onAccuracyChanged(Sensor sensor, int accuracy) {
-            // unused
-
-        }
-
-    };
 
     Runnable mStatusChecker = new Runnable() {
         @Override
@@ -263,7 +210,8 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     if(disp_temp >0) {
-                        txt_delta_Temp.setText("" + String.format("%.2f", disp_temp));
+                        //FIXME set text cause exeption
+                        txt_delta_speed.setText("" + disp_temp);
 
                         if (disp_temp > 500) {
                            // txt_delta_Temp.setTextColor(getResources().getColor(R.color.colorRed));
@@ -272,18 +220,10 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }else
                     {
-                        txt_delta_Temp.setText("ERROR CALC");
+                      //  txt_delta_Temp.setText("ERROR CALC");
                     }
 
-
-
-
-
                     // txt_speed.setText("" + String.format("%.2f",mVehicle.speed));
-
-
-
-
 
             mHandler.postDelayed(mStatusChecker, mInterval);
 
@@ -300,16 +240,4 @@ public class MainActivity extends AppCompatActivity {
     void stopRepeatingTask() {
         mHandler.removeCallbacks(mStatusChecker);
     }
-
-
-    //set calibration values for G-Sensors on button click
-    public void fct_calibrate(View view) {
-        xd=x;
-        yd=y;
-        zd=z;
-        sumd=sum;
-    }
-
-
-
 }
