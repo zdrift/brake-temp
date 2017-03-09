@@ -222,16 +222,6 @@
         android:layout_toEndOf="@+id/Cw" />
 
     <TextView
-        android:text="0.0"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/txt_deltaT"
-        android:layout_alignBaseline="@+id/textView"
-        android:layout_alignBottom="@+id/textView"
-        android:layout_toStartOf="@+id/txt_delta_speed"
-        android:layout_alignEnd="@+id/txt_delta_speed" />
-
-    <TextView
         android:text="delta T [°C]"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -264,6 +254,55 @@
         android:id="@+id/txt_delta_speed"
         android:layout_below="@+id/VehicleWeight"
         android:layout_toEndOf="@+id/textView2" />
+
+    <TextView
+        android:text="0.0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt_deltaT"
+        android:layout_alignBottom="@+id/HeatCapacity"
+        android:layout_toEndOf="@+id/txt_delta_speed" />
+
+    <TextView
+        android:text="800°C"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/but_calib"
+        android:layout_toStartOf="@+id/txt_deltaT"
+        android:id="@+id/txt_temp1"
+        android:background="@android:drawable/title_bar"
+        android:layout_alignParentEnd="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:ems="10"
+        android:layout_alignParentBottom="true"
+        android:layout_toStartOf="@+id/txt_ek"
+        android:layout_marginBottom="14dp"
+        android:id="@+id/editText" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:ems="10"
+        android:id="@+id/input_sim_speed"
+        android:layout_above="@+id/textView3"
+        android:layout_toEndOf="@+id/txt_deltaT"
+        android:background="@android:drawable/toast_frame"
+        android:visibility="visible"
+        android:text="22" />
+
+    <ToggleButton
+        android:text="SimON"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/Cw"
+        android:layout_alignEnd="@+id/textView"
+        android:id="@+id/but_sim"
+        tools:text="Sim" />
 
 
 </RelativeLayout>

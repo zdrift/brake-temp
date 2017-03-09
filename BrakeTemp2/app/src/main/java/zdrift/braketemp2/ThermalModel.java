@@ -19,6 +19,8 @@ public class ThermalModel extends Physics{
     double Qgen;
     double Qdis;
 
+    double ekin_old;
+
 
     ThermalModel(){
         this.ekin=0.0;
@@ -30,6 +32,7 @@ public class ThermalModel extends Physics{
         this.tabsolut=20.0;
         this.Qgen=0.0;
         this.Qdis=0.0;
+        this.ekin_old=0.0;
     }
 
     double fct_Qgen(double Ekin, double Epot){
@@ -51,7 +54,14 @@ public class ThermalModel extends Physics{
             }
 
             try {
-                Qgen = fct_Qgen(ekin, 0);//toto Epot berücksichtigen
+                //brake active kinetic engery must decrease
+                if(ekin_old>ekin){
+                    Qgen = fct_Qgen(ekin_old-ekin, 0);//toto Epot berücksichtigen
+                }else{
+                    Qgen=0;
+                }
+                ekin_old=ekin;
+                Log.e("Qgen:",""+Qgen);
             }catch (Exception e){
                 Qgen=0;
                 Log.e("Qgen","exception");
@@ -77,6 +87,8 @@ public class ThermalModel extends Physics{
                 qkonv_center = this.fct_free_convection(fct_alpha_air(veh.speed * veh.mRaceBrake.D / (veh.drad * Math.PI)), veh.mRaceBrake.fct_A_Brake(veh.mRaceBrake.D, veh.mRaceBrake.d), tabsolut, veh.airtemp);
 
                 Qdis = fct_Qdis(qkonv_out, qkonv_center, 0); //todo Qrad
+
+                Log.e("Qdis:",""+Qdis);
 
                 tdelta = (Qgen - Qdis) / (veh.mRaceBrake.c_specific * veh.mRaceBrake.mass);
 

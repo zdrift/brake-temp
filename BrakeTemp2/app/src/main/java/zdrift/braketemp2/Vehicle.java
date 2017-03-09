@@ -21,8 +21,8 @@ public class Vehicle {
         this.mass = mass;
         this.balancing = balancing;
         this.speed = speed;
-        this.mRaceBrake = mRaceBrake;
         this.cw = cw;
+        this.mRaceBrake = mRaceBrake;
         this.airtemp = airtemp;
         this.drad = drad;
     }
@@ -31,7 +31,7 @@ public class Vehicle {
     Vehicle(){
         this.mass = 1290;
         this.balancing = 0.8;
-        this.speed = 10.0;
+        this.speed = 0.0;
         this.cw = 0.3;
         this.airtemp = 20.0;
         this.drad = 0.8; //todo überprüfen 28zoll->0,71m + 9cm proz Höhe Gummi

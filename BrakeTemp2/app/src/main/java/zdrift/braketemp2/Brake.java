@@ -28,7 +28,7 @@ package zdrift.braketemp2;
     Brake(){
         this.temp           = 20.0;
         this.mass           = 10.0;
-        this.c_specific     = 0.46;
+        this.c_specific     = 460.0;
         this.D              = 0.300;
         this.d              = 0.079;
         this.h              = 0.022;
